@@ -1,7 +1,7 @@
 # determine docker executable
 Facter.add(:docker_executable) do
   setcode do
-    Facter::Core::Resolution.exec('which docker')
+    Facter::Util::Resolution.exec('which docker')
   end
 end
 
