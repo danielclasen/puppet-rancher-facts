@@ -9,7 +9,7 @@ end
 Facter.add(:rancher_agent_instance_id) do
   confine :docker_executable => !nil
   setcode do
-    Facter::Core::Execution.exec('docker ps --filter="label=io.rancher.container.system=NetworkAgent" -q')
+    Facter::Util::Resolution.exec('docker ps --filter="label=io.rancher.container.system=NetworkAgent" -q')
   end
 end
 
@@ -22,7 +22,6 @@ Facter.add(:rancher_agent_labels) do
   dockerExec = Facter.value(:docker_executable)
   rancherInstanceId = Facter.value(:rancher_agent_instance_id)
   setcode do
-    Facter::Core::Execution.exec( dockerExec, 'exec -it',  rancherInstanceId , 'curl  --header \'Accept: application/json\' http://localhost/latest/self/host/labels')
+    Facter::Util::Resolution.exec("#{dockerExec} exec -it #{rancherInstanceId} curl  --header 'Accept: application/json' http://localhost/latest/self/host/labels")
   end
 end
-
